@@ -176,7 +176,7 @@ def add_goal(user_id, completed, description, duration):
     connection.close()
 
 #deletes a goal
-def delete_goal(goal_id):
+def goal_delete(goal_id):
     connection = sql.connect("database/fintech.db")
     cursor = connection.cursor()
 
