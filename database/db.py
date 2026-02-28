@@ -188,6 +188,7 @@ def delete_goal(goal_id):
     connection.commit()
     connection.close()
 
+
 def update_goal_status(goal_id, new_status, user_id ):
     connection = sql.connect("database/fintech.db")
     cursor = connection.cursor()
