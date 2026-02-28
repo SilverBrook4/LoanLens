@@ -110,7 +110,7 @@ class LoanList():
         if active_loans == 0:
             percent_active = 0
         else:
-            percent_active = ((active_loans - self.num_loans) / self.num_loans) * 100
+            percent_active = (loans_amount_complete / loan_total) * 100
 
         active_loans = self.num_loans - active_loans
 
