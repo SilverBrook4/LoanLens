@@ -41,7 +41,11 @@ oauth = OAuth(
 def get_current_user(request: Request):
     user = request.session.get("kinde_user")
     if not user:
+<<<<<<< HEAD
         raise HTTPException(status_code=401, detail="Not authenticated")
+=======
+        return None
+>>>>>>> 4886967c5b73088b606fe25395739c44969699c1
     return user
 
 @app.get("/login")
@@ -93,8 +97,11 @@ async def logout(request: Request):
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
+    current_user = request.session.get("kinde_user")
+
     if "state" in request.query_params:
         return RedirectResponse(url="/", status_code=302)
+<<<<<<< HEAD
     user = request.session.get("kinde_user")
     if not user:
         return RedirectResponse(url="/login", status_code=302)
@@ -107,12 +114,34 @@ async def dashboard(
 ):
     cl = checklist_module.Checklist(user)
     goals = cl.Create_Post()
+=======
+
+    # Secure Gatekeeper
+    if not current_user:
+        return RedirectResponse(url="/login", status_code=302)
+
+    # Access the user's unique ID from the Kinde session
+    kinde_id = current_user.get("id")
+    if not kinde_id:
+    # If Kinde didn't return an ID, the session might be corrupted
+        request.session.clear()
+        return RedirectResponse(url="/login")
+    
+    # Initialize your checklist with the authenticated user
+    checklist = Checklist(kinde_id)
+    goals = checklist.Create_Post()
+>>>>>>> 4886967c5b73088b606fe25395739c44969699c1
 
     return templates.TemplateResponse(
         "dashboard.jinja",
         {
+<<<<<<< HEAD
             "request": request,
             "user": user,
+=======
+            "request": request, 
+            "user": current_user, 
+>>>>>>> 4886967c5b73088b606fe25395739c44969699c1
             "goals": goals
         }
     )

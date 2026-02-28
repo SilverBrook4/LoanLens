@@ -27,12 +27,27 @@ def insert_career(name):
     
 #function that will insert a user to the database
 #will return the user_id
-def insert_user(name,email, h_pass, career_id):
+def insert_user(name,email, career_id):
     connection = sql.connect("database/fintech.db")
     cursor = connection.cursor()
+    #retrieve email from kind
+    
+    #need to check if email exists through db
+     #if not, create new user
     cursor.execute(
-        '''INSERT into User (name, email, h_pass, career_id) VALUES (?,?,?,?)''', 
-    (name, email, h_pass, career_id)
+        '''SELECT user_id FROM user WHERE email = ?''',
+        (email,)
+    )
+
+    same_email = cursor.fetchone()
+    if same_email:
+        print("email is already in use")
+        connection.close()
+        return None #email already exists
+
+    cursor.execute(
+        '''INSERT into User (name, email, career_id) VALUES (?,?,?)''', 
+    (name, email, career_id)
     )
     connection.commit()
     user_id = cursor.lastrowid
@@ -40,13 +55,13 @@ def insert_user(name,email, h_pass, career_id):
     return user_id
 
 #searches database if user is there returns id if it is there
-def login_user(email, h_pass):
+def login_user(email):
     connection = sql.connect("database/fintech.db")
     cursor = connection.cursor()
 
     cursor.execute(
-        "SELECT user_id FROM users WHERE email = ? AND h_pass = ?",
-        (email, h_pass)
+        "SELECT user_id FROM users WHERE email = ?",
+        (email,)
     )
 
     result = cursor.fetchone()
@@ -65,7 +80,7 @@ def get_user(user_id):
     connection = sql.connect("database/fintech.db")
     cursor = connection.cursor()
     cursor.execute(
-        '''SELECT user_id, name, email, h_pass, career_id
+        '''SELECT user_id, name, email, career_id
     FROM User
     WHERE user_id = ?
     ''',(user_id,)
@@ -91,6 +106,17 @@ def get_loans(user_id):
 
     return loans
 
+#creates a loan and adds it to db.
+def create_loan(user_id, loan_name, min_payment, loan_type, late_fee, p_amount, IR, IT, term_length, amount_payed):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        '''INSERT into loans (user_id, loan_name, min_payment, type, late_fee, p_amount, IR, IT, term_length, amount_payed) VALUES (?,?,?,?,?,?,?,?,?,?)''', 
+    (user_id, loan_name, min_payment, loan_type, late_fee, p_amount, IR, IT, term_length, amount_payed)
+    )
+    connection.commit()
+    connection.close()
     
 
 #retrieves users goals, returns a list of tuples of each goal information.
@@ -106,9 +132,12 @@ def retrieve_goals(user_id):
 
     return goals
 
-#
+#creates a 
 def add_goals(user_id, completed, description, duration):
-    pass
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+    '''INSERT into goal '''
+    
 
 def test():
     career_id = insert_career("Computer Science")
@@ -116,7 +145,6 @@ def test():
     user_id = insert_user(
         "Tyler",
         "tjsheeha@uvm.edu",
-        "pass",
         career_id
     )
 
