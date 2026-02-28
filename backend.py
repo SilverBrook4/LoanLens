@@ -12,7 +12,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def login(request: Request):
-    return templates.templates.TemplateResponse(
+    return templates.TemplateResponse(
         "dashboard.jinja",
         {"request": request,}
     )
