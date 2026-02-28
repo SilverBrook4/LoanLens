@@ -1,0 +1,385 @@
+* {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* General CSS */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #333;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #666;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Navigation Bar */
+body > div:first-child {
+    background: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body > div:first-child a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+body > div:first-child a:hover {
+    color: #764ba2;
+}
+
+/* Header style */
+header {
+    background: linear-gradient(135deg, rgb(148, 94, 255) 0%, rgb(165, 120, 255) 100%);
+    padding: 2.5rem 2rem;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+}
+
+/* Main Content */
+main {
+    padding: 2rem;
+    flex: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+main h1 {
+    color: rgba(40, 40, 40, 1);
+    margin-bottom: 1.5em;
+    font-size: 2.5rem;
+}
+
+/* Section Styling */
+section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+section h2 {
+    color: #333;
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+section > p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+/* Loan Summary Grid */
+.loan_summary > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.loan_summary > div > div {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.loan_summary > div > div:hover {
+    transform: scale(1.05);
+}
+
+.loan_summary > div > div > div:first-child {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.loan_summary > div > div > div:last-child {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    color: white;
+}
+
+/* Progress Bars */
+progress {
+    width: 100%;
+    height: 30px;
+    border-radius: 15px;
+    border: none;
+    background: #e0e0e0;
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+progress::-webkit-progress-bar {
+    background: #e0e0e0;
+    border-radius: 15px;
+}
+
+progress::-webkit-progress-value {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    transition: width 0.3s ease;
+}
+
+progress::-moz-progress-bar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+}
+
+.monthly_goal label,
+.loan_progress label {
+    display: block;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.monthly_goal span,
+.loan_progress span {
+    display: block;
+    text-align: right;
+    font-weight: 600;
+    color: #667eea;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+}
+
+/* Checklist Styling */
+.checklist > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.checklist > div > form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.checklist > div > form:hover {
+    background: #e9ecef;
+}
+
+.checklist span {
+    flex: 1;
+    text-align: left;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Buttons */
+button {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background: #764ba2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button.success {
+    background: #28a745;
+}
+
+button.success:hover {
+    background: #218838;
+}
+
+button.secondary {
+    background: #6c757d;
+}
+
+button.secondary:hover {
+    background: #5a6268;
+}
+
+button.outline {
+    background: transparent;
+    border: 2px solid #667eea;
+    color: #667eea;
+}
+
+button.outline:hover {
+    background: #667eea;
+    color: white;
+}
+
+button.outline.secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+button.outline.secondary:hover {
+    background: #6c757d;
+    color: white;
+}
+
+/* Forms */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    font-weight: 500;
+    color: #333;
+    gap: 0.5rem;
+}
+
+input[type="text"],
+input[type="int"],
+input[type="number"] {
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="int"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Details/Summary */
+details {
+    margin-top: 1.5rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #667eea;
+    padding: 0.5rem;
+    list-style: none;
+    transition: color 0.3s ease;
+}
+
+summary:hover {
+    color: #764ba2;
+}
+
+summary::before {
+    content: "➕ ";
+    margin-right: 0.5rem;
+}
+
+details[open] summary::before {
+    content: "➖ ";
+}
+
+/* Canvas for Charts */
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    main {
+        padding: 1rem;
+    }
+
+    header {
+        padding: 1.5rem 1rem;
+    }
+
+    header h1 {
+        font-size: 1.75rem;
+    }
+
+    section {
+        padding: 1.5rem;
+    }
+
+    .loan_summary > div {
+        grid-template-columns: 1fr;
+    }
+
+    body > div:first-child {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
