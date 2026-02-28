@@ -35,7 +35,13 @@
       <p>Key metrics at a glance</p>
       <div>
         <div>
-          <div id="totalLoans">0</div>
+          <div id="totalLoans">
+          {% if loan_summary %}
+            {{loan_summary['total_amount']}}
+          {% else %}
+            No Total to Display
+          {% endif %}}
+          </div>
           <div>Total Loans</div>
         </div>
         <div>
