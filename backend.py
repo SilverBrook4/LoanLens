@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Depends, HTTPException, status
+from fastapi import FastAPI, Request, Depends, HTTPException, status, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -83,6 +83,19 @@ async def logout(request: Request):
     logout_url = await oauth.logout(user_id=user_id)
     return RedirectResponse(url=logout_url, status_code=302)
 
+@app.post("/goal_create")
+async def goal_create(
+    request: Request, 
+    goal_name: str = Form(...),
+    duration: int = Form(...),
+    complete: int = Form(...)
+    ): 
+    if complete == 'yes':
+        complete_flag = 1
+    else:
+        complete_flag = 0
+    
+    pass
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     current_user = request.session.get("kinde_user")
