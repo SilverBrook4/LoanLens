@@ -57,6 +57,59 @@
           <div>Avg Loan Size</div>
         </div>
       </div>
+      <!-- add loan form -->
+      <details>
+        <summary role="button" class="addloan">Add New Loan</summary>
+        <form action="/loan_create" method="POST">
+
+          <label for="loan_name">Loan Name
+            <input type="text" id="loan_name" name="loan_name" required>
+          </label>
+
+          <label for="loan_type">Loan Type
+            <select id="loan_type" name="loan_type" required>
+              <option value="student">Student</option>
+              <option value="mortgage">Mortgage</option>
+              <option value="auto">Auto</option>
+              <option value="personal">Personal</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+
+          <label for="p_amount">Principal Amount ($)
+            <input type="number" id="p_amount" name="p_amount" step="0.01" min="0" required>
+          </label>
+
+          <label for="ir">Interest Rate (%)
+            <input type="number" id="ir" name="ir" step="0.01" min="0" required>
+          </label>
+
+          <label for="it">Interest Type
+            <select id="it" name="it" required>
+              <option value="fixed">Fixed</option>
+              <option value="variable">Variable</option>
+            </select>
+          </label>
+
+          <label for="term_length">Term Length (months)
+            <input type="number" id="term_length" name="term_length" min="1" required>
+          </label>
+
+          <label for="min_payment">Minimum Payment ($)
+            <input type="number" id="min_payment" name="min_payment" step="0.01" min="0" required>
+          </label>
+
+          <label for="late_fee">Late Fee ($)
+            <input type="number" id="late_fee" name="late_fee" step="0.01" min="0" value="0">
+          </label>
+
+          <label for="amount_payed">Amount Already Paid ($)
+            <input type="number" id="amount_payed" name="amount_payed" step="0.01" min="0" value="0">
+          </label>
+
+          <button type="submit">Add Loan</button>
+        </form>
+      </details>
     </section>
 
     <section class="monthly_goal">
@@ -92,7 +145,7 @@
             <button type="submit" 
                     class="{% if goal['status'] == 1 %}success{% else %}secondary outline{% endif %}" 
                     style="padding: 5px 15px; font-size: 0.9rem; min-width: 120px;">
-              {% if goal['status'] == 1 %} Done {% else %} Mark Complete {% endif %}
+              {% if goal['status'] == 1 %} Mark Incomplete {% else %} Mark Complete {% endif %}
             </button>
           </form>
 
@@ -134,7 +187,7 @@
       -->
       </div>
       <details>
-        <summary role="button" class="secondary">Add New Goal</summary>
+        <summary role="button" class="addgoal">Add New Goal</summary>
         <form action="/goal_create" method="POST">
             <label for="goal">
                 Goal

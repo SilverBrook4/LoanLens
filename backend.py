@@ -47,6 +47,7 @@ def get_current_user(request: Request):
         return
     return user
 
+# ----- Login routes ------
 @app.get("/login")
 async def login(request: Request):
     url = await oauth.login()
@@ -92,7 +93,7 @@ async def logout(request: Request):
     logout_url = f"{os.getenv('KINDE_HOST')}/logout?{urlencode(params)}"
     print("LOGOUT URL:", logout_url)
     return RedirectResponse(url=logout_url, status_code=302)
-
+# ----- goal modifications -----
 @app.post("/goal_create")
 async def goal_create(
     request: Request, 
@@ -134,6 +135,28 @@ async def delete_goal(
     db.delete_goal(goal_id)
     return RedirectResponse(url="/", status_code=302)
 
+# ------ loan modifications ------
+@app.post("/loan_create")
+async def loan_create(
+    request: Request,
+    loan_name: str = Form(...),
+    min_payment: float = Form(...),
+    loan_type: str = Form(...),
+    late_fee: float = Form(...),
+    p_amount: float = Form(...),
+    ir: float = Form(...),
+    it: str = Form(...),
+    term_length: int = Form(...),
+    amount_payed: float = Form(0.0)
+):
+    current_user = request.session.get("kinde_user")
+    if not current_user:
+        return RedirectResponse(url="/login", status_code=302)
+    
+    kinde_id = current_user.get("id")
+    db.create_loan(kinde_id, loan_name, min_payment, loan_type, late_fee, p_amount, ir, it, term_length, amount_payed)
+    return RedirectResponse(url="/", status_code=302)
+# ------ home page ------
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     current_user = request.session.get("kinde_user")
