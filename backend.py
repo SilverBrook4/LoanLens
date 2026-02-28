@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from kinde_sdk.auth.oauth import OAuth
+import checklist
 
 load_dotenv()
 
@@ -32,7 +33,7 @@ async def get_current_user(request: Request):
     # Check if a valid session exists
     if not kinde_oauth.is_authenticated():
         raise HTTPException(status_code=401, detail="Please log in first")
-    
+
     # Get the user details directly from the SDK
     # This returns a dictionary with 'id', 'email', 'given_name', etc.
     user = kinde_oauth.get_user_details()
@@ -54,6 +55,10 @@ async def dashboard(
     # Access the user's unique ID from the Kinde token
     kinde_id = current_user.get("id")
 
+    checklist = shecklist.Checklist(current_user)
+
+    goals = checklist.Create_Post()
+
     # Query your DB using ONLY this ID
     # example: user_data = db.query(User).filter(User.kinde_id == kinde_id).first()
     
@@ -61,7 +66,8 @@ async def dashboard(
         "dashboard.jinja", 
         {
             "request": request, 
-            "user": current_user  # Pass the Kinde info to the frontend
+            "user": current_user,  # Pass the Kinde info to the frontend
+            "goals": goals
         }
     )
 
