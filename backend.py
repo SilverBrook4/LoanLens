@@ -67,9 +67,8 @@ async def callback(request: Request, code: str, state: str | None = None):
     # Sync Kinde user into your DB
     name = f"{user.get('given_name', '')} {user.get('family_name', '')}".strip()
     email = user.get("email", "")
-    kinde_id = user.get("id", "")
-    db_user_id = db.insert_user(name, email, None)
-    user["db_user_id"] = db_user_id  # stash so rest of app can use it
+    db_user_id = db.get_or_create_user(name, email)  # won't duplicate if they've logged in before
+    user["db_user_id"] = db_user_id
 
     request.session["kinde_user"] = user
     return RedirectResponse(url="/", status_code=302)
