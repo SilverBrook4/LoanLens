@@ -1,0 +1,4 @@
+pandas
+fastapi
+fastapi[standard]
+matplotlib
