@@ -53,7 +53,7 @@ async def dashboard(
 ):
     # Access the user's unique ID from the Kinde token
     kinde_id = current_user.get("id")
-
+    
     # Query your DB using ONLY this ID
     # example: user_data = db.query(User).filter(User.kinde_id == kinde_id).first()
     
