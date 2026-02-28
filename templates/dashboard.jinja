@@ -15,10 +15,14 @@
 
   <main>
     <section class="loan_distribution">
-      <h2>Loans Distribution</h2>
-      <p>Breakdown by loan status</p>
+      <h2>Loan Payoff Progress</h2>
+      <p>Principal vs minimum payment per loan</p>
       <div>
-        <canvas id="loansPieChart"></canvas>
+        {% if chart %}
+          <img src="data:image/png;base64,{{ chart }}" alt="Loan chart" style="width: 100%; max-width: 700px;">
+        {% else %}
+          <p>No loan data to display chart.</p>
+        {% endif %}
       </div>
     </section>
 

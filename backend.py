@@ -59,11 +59,11 @@ def generate_loan_chart(loans):
 
     names = [loan[2] for loan in loans]          # loan_name
     principals = [loan[6] for loan in loans]     # p_amount
-    min_payments = [loan[3] for loan in loans]   # min_payment
+    amount_payed = [loan[10] for loan in loans]  # amount_payed
 
     fig, ax = plt.subplots(figsize=(6, 3))
-    bars = ax.barh(names, principals, color='#4A90D9', label='Total Principal')
-    ax.barh(names, min_payments, color='#27AE60', label='Min Payment')
+    ax.barh(names, principals, color='#4A90D9', label='Total Principal')
+    ax.barh(names, amount_payed, color='#27AE60', label='Amount Paid')
 
     ax.set_xlabel('Amount ($)')
     ax.set_title('Loan Payoff Progress')
@@ -191,8 +191,8 @@ async def loan_create(
     if not current_user:
         return RedirectResponse(url="/login", status_code=302)
     
-    kinde_id = current_user.get("id")
-    db.create_loan(kinde_id, loan_name, min_payment, loan_type, late_fee, p_amount, ir, it, term_length, amount_payed)
+    db_user_id = current_user.get("db_user_id")
+    db.create_loan(db_user_id, loan_name, min_payment, loan_type, late_fee, p_amount, ir, it, term_length, amount_payed)
     return RedirectResponse(url="/", status_code=302)
 
 @app.post("/loan_contribute")
@@ -244,7 +244,7 @@ async def home(request: Request):
     goal_total = len(goals)
 
     # get loans and loan summary data
-    loan_listing = loan_list_module.LoanList(current_user.get("id"))
+    loan_listing = loan_list_module.LoanList(current_user.get("db_user_id"))
     loan_summary = loan_listing.Create_Summary_Post()
     loans = loan_listing.Create_Loan_Post()
 
@@ -257,8 +257,10 @@ async def home(request: Request):
             "goal_completed": goal_completed,
             "goal_total": goal_total,
             "loan_summary": loan_summary,
-            "loans": loans
+            "loans": loans,
+            "chart": chart
         }
+
     )
 
 if __name__ == '__main__':
