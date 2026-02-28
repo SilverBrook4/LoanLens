@@ -174,3 +174,27 @@ def test():
 
 #test()
 # End of masons functions
+
+# Holden added function for email retrieval
+def get_or_create_user(kinde_id, name, email):
+    """Look up user by kinde_id, create if not exists. Returns user_id."""
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+    
+    # Check if user already exists
+    cursor.execute("SELECT user_id FROM User WHERE email = ?", (email,))
+    result = cursor.fetchone()
+    
+    if result:
+        connection.close()
+        return result[0]
+    
+    # New user — insert them
+    cursor.execute(
+        "INSERT INTO User (name, email, h_pass, career_id) VALUES (?, ?, ?, ?)",
+        (name, email, kinde_id, None)  # using kinde_id as h_pass placeholder, no career yet
+    )
+    connection.commit()
+    user_id = cursor.lastrowid
+    connection.close()
+    return user_id
