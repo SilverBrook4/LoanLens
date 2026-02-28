@@ -77,9 +77,6 @@ def generate_loan_chart(loans):
     buf.seek(0)
     return base64.b64encode(buf.read()).decode('utf-8')
 
-=======
-# ----- Login routes ------
->>>>>>> 14bdb1011335dafcd2ef51bf50a6fa693a1f06fd
 @app.get("/login")
 async def login(request: Request):
     url = await oauth.login()
