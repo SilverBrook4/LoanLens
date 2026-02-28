@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REDACTED</title>
+</head>
+<body>
+  <header>
+    <h1>Financial Dashboard</h1>
+    <p>Overview of your loan portfolio</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Loans Distribution</h2>
+      <p>Breakdown by loan status</p>
+      <div>
+        <canvas id="loansPieChart"></canvas>
+      </div>
+    </section>
+
+    <section>
+      <h2>Loan Summary</h2>
+      <p>Key metrics at a glance</p>
+      <div>
+        <div>
+          <div id="totalLoans">0</div>
+          <div>Total Loans</div>
+        </div>
+        <div>
+          <div id="totalAmount">$0</div>
+          <div>Total Amount</div>
+        </div>
+        <div>
+          <div id="activeLoans">0</div>
+          <div>Active Loans</div>
+        </div>
+        <div>
+          <div id="avgLoan">$0</div>
+          <div>Avg Loan Size</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Monthly Goal Progress</h2>
+      <p>Current progress towards monthly target</p>
+      <div>
+        <label for="monthlyGoal">Monthly Goal: $50,000 / $100,000</label>
+        <progress id="monthlyGoal" value="50000" max="100000">50%</progress>
+        <span>50%</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Loan Completion Progress</h2>
+      <p>Progress towards completing all loans</p>
+      <div>
+        <label for="loanCompletion">Completed: 67 / 100 loans</label>
+        <progress id="loanCompletion" value="67" max="100">67%</progress>
+        <span>67%</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Completion Checklist</h2>
+      <p>Track your loan processing tasks</p>
+      <div>
+        <div>
+          <input type="checkbox" id="check1" name="checklist">
+          <label for="check1">Review pending loan applications</label>
+        </div>
+        <div>
+          <input type="checkbox" id="check2" name="checklist" checked>
+          <label for="check2">Process approved loans</label>
+        </div>
+        <div>
+          <input type="checkbox" id="check3" name="checklist">
+          <label for="check3">Update loan documentation</label>
+        </div>
+        <div>
+          <input type="checkbox" id="check4" name="checklist">
+          <label for="check4">Send payment reminders</label>
+        </div>
+        <div>
+          <input type="checkbox" id="check5" name="checklist" checked>
+          <label for="check5">Generate monthly reports</label>
+        </div>
+        <div>
+          <input type="checkbox" id="check6" name="checklist">
+          <label for="check6">Verify loan completion status</label>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
