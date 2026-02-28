@@ -66,6 +66,46 @@
           <div>Avg Loan Size</div>
         </div>
       </div>
+      <!-- Loan List -->
+      {% if loans %}
+        {% for loan in loans %}
+        <div style="border: 1px solid #ccc; border-radius: 8px; padding: 12px; margin-bottom: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong>{{ loan['name'] }}</strong>
+              <span style="margin-left: 8px; font-size: 0.8rem; opacity: 0.7;">({{ loan['type'] }} · {{ loan['it'] }})</span>
+              {% if loan['active'] %}
+                <span style="color: green; font-size: 0.8rem; margin-left: 8px;">● Active</span>
+              {% else %}
+                <span style="color: gray; font-size: 0.8rem; margin-left: 8px;">● Paid Off</span>
+              {% endif %}
+            </div>
+            <div style="text-align: right; font-size: 0.9rem;">
+              <div>Principal: <strong>${{ loan['p_amount'] }}</strong></div>
+              <div>Paid: ${{ loan['amount_payed'] }} &nbsp;|&nbsp; Min Payment: ${{ loan['min_payment'] }}</div>
+              <div>Rate: {{ loan['ir'] }}% &nbsp;|&nbsp; Term: {{ loan['term_length'] }} months</div>
+            </div>
+          </div>
+
+          <!-- Progress bar -->
+          <progress value="{{ loan['amount_payed'] }}" max="{{ loan['p_amount'] }}" style="width: 100%; margin-top: 8px;"></progress>
+
+          <!-- Contribute dropdown -->
+          <details style="margin-top: 8px;">
+            <summary role="button" style="font-size: 0.85rem;">Make a Payment</summary>
+            <form action="/loan_contribute" method="POST" style="margin-top: 6px;">
+              <input type="hidden" name="loan_id" value="{{ loan['id'] }}">
+              <label for="payment_{{ loan['id'] }}">Payment Amount ($)
+                <input type="number" id="payment_{{ loan['id'] }}" name="payment_amount" step="0.01" min="0.01" required>
+              </label>
+              <button type="submit">Submit Payment</button>
+            </form>
+          </details>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p>No loans found. Add one below!</p>
+      {% endif %}
       <!-- add loan form -->
       <details>
         <summary role="button" class="addloan">Add New Loan</summary>

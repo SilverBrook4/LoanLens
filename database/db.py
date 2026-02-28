@@ -24,7 +24,16 @@ def insert_career(name):
 
     return career_id
 
-    
+def contribute_to_loan(loan_id, payment_amount):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+    cursor.execute(
+        '''UPDATE loans SET amount_payed = amount_payed + ? WHERE loan_id = ?''',
+        (payment_amount, loan_id)
+    )
+    connection.commit()
+    connection.close()
+
 #function that will insert a user to the database
 #will return the user_id
 def insert_user(name,email, career_id):

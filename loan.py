@@ -9,7 +9,7 @@ class Loan:
         self.min_payment = min_payment
         self.type = type
         self.late_fee = late_fee
-        self.p_amount = p_amount
+        self.p_amount = p_amount # total loan amount
         self.ir = ir
         self.it = it
         self.term_length = term_length
@@ -22,4 +22,18 @@ class Loan:
         else:
 
             self.active = False
+
+    def Create_Post(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'type': self.type,
+            'it': self.it,
+            'ir': self.ir,
+            'p_amount': self.p_amount,
+            'amount_payed': self.amount_payed,
+            'min_payment': self.min_payment,
+            'term_length': self.term_length,
+            'active': self.active
+        }
 
