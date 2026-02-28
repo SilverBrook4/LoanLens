@@ -3,7 +3,7 @@
 {% block body %}
   <div>
     {% if user %}
-      Logged in as {{ user.email }} | <a href="/logout">Logout</a>
+      Logged in as {{ user.email }} | <a href="/jobs">Job Listings</a> | <a href="/logout">Logout</a>
     {% else %}
       <a href="/login">Login</a> | <a href="/register">Register</a>
     {% endif %}
@@ -14,6 +14,14 @@
   </header>
 
   <main>
+    <section>
+      <h2>Job Opportunities</h2>
+      <p>Explore job listings related to your career</p>
+      <div>
+        <a href="/jobs">View Job Listings →</a>
+      </div>
+    </section>
+
     <section class="loan_distribution">
       <h2>Loans Distribution</h2>
       <p>Breakdown by loan status</p>
@@ -27,7 +35,13 @@
       <p>Key metrics at a glance</p>
       <div>
         <div>
-          <div id="totalLoans">0</div>
+          <div id="totalLoans">
+          {% if loan_summary %}
+            {{loan_summary['total_amount']}}
+          {% else %}
+            No Total to Display
+          {% endif %}}
+          </div>
           <div>Total Loans</div>
         </div>
         <div>

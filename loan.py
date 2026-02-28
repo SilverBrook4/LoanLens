@@ -15,6 +15,3 @@ class Loan:
         self.term_length = term_length
         self.amount_payed = amount_payed
 
-    def Create_Post(self):
-
-        return {}
