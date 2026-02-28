@@ -15,3 +15,11 @@ def get_users():
         users.append({"user_id": row[0], "username": row[1], "email": row[2]})
     connection.close()
     return users
+
+
+
+
+# Mason functions
+
+
+# End of masons functions
