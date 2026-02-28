@@ -50,10 +50,9 @@ class LoanList():
 
     def Create_Post(self):
 
-        post = []
+        loan_total = self.Calculate_Loan_Total()
+        avg_loan = self.Calculate_Average_Loan_Size()
 
-        for loan in self.loans:
-
-            post.append(loan.Create_Post())
+        post = {'total_amount':loan_total, 'avg_loan':avg_loan}
 
         return post
