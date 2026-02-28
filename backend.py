@@ -68,7 +68,7 @@ def generate_loan_chart(loans):
     x = range(len(names))
     bar_height = 0.35
     bars1 = ax.barh([i - bar_height/2 for i in x], principals, bar_height, label='Principal', color='#667eea', edgecolor=(1,1,1,0.3), linewidth=0.8)
-    bars2 = ax.barh([i + bar_height/2 for i in x], amount_payed, bar_height, label='Min Payment', color='#27ae60', edgecolor=(1,1,1,0.3), linewidth=0.8)
+    bars2 = ax.barh([i + bar_height/2 for i in x], amount_payed, bar_height, label='Amount Payed', color='#27ae60', edgecolor=(1,1,1,0.3), linewidth=0.8)
 
     ax.set_yticks(x)
     ax.set_yticklabels(names, fontsize=10)
