@@ -97,7 +97,10 @@ async def callback(request: Request, code: str, state: str | None = None):
     # Sync Kinde user into your DB
     name = f"{user.get('given_name', '')} {user.get('family_name', '')}".strip()
     email = user.get("email", "")
-    db_user_id = db.insert_user(name, email, None)  # won't duplicate if they've logged in before
+    db_user_id = db.insert_user(name, email, None)
+    if db_user_id is None:
+        # Returning user: get their existing db user_id by email
+        db_user_id = db.get_user_id_by_email(email)
     user["db_user_id"] = db_user_id
 
     request.session["kinde_user"] = user
@@ -130,7 +133,13 @@ async def goal_create(
     status: Optional[str] = Form(None)
     ): 
     current_user = request.session.get("kinde_user")
-    db_user_id = current_user.get("db_user_id")  # use db_user_id not kinde_id
+    if not current_user:
+        return RedirectResponse(url="/login", status_code=302)
+    db_user_id = current_user.get("db_user_id")
+    if db_user_id is None and current_user.get("email"):
+        db_user_id = db.get_user_id_by_email(current_user["email"])
+        current_user["db_user_id"] = db_user_id
+        request.session["kinde_user"] = current_user
     status_flag = 1 if status == 'yes' else 0
     db.add_goal(db_user_id, status_flag, goal, duration)
     return RedirectResponse(url="/", status_code=302)
@@ -192,6 +201,11 @@ async def home(request: Request):
     # Secure Gatekeeper
     if not current_user:
         return RedirectResponse(url="/login", status_code=302)
+
+    # Ensure db_user_id is set (fixes returning users whose session had None)
+    if current_user.get("db_user_id") is None and current_user.get("email"):
+        current_user["db_user_id"] = db.get_user_id_by_email(current_user["email"])
+        request.session["kinde_user"] = current_user
 
     # Access the user's unique ID from the Kinde session
     kinde_id = current_user.get("id")

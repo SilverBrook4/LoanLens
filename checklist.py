@@ -18,7 +18,7 @@ class Checklist:
 
 
     def Get_Goals_From_DB(self):
-        user_id = self.user.get("id")  # extract Kinde user ID
+        user_id = self.user.get("db_user_id")  # use same db user_id as goal_create
         goals_db = db.retrieve_goals(user_id)
 
         # cycle through all goals and create tasks

@@ -43,7 +43,7 @@ def insert_user(name,email, career_id):
     if same_email:
         print("email is already in use")
         connection.close()
-        return None #email already exists
+        return None  # email already exists
 
     cursor.execute(
         '''INSERT into User (name, email, career_id) VALUES (?,?,?)''', 
@@ -72,6 +72,16 @@ def login_user(email):
     else:
         return None
 
+
+
+def get_user_id_by_email(email):
+    """Return database user_id for the given email, or None."""
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT user_id FROM User WHERE email = ?", (email,))
+    row = cursor.fetchone()
+    connection.close()
+    return row[0] if row else None
 
 
 # Mason functions
