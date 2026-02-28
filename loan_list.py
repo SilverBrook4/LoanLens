@@ -45,6 +45,10 @@ class LoanList():
 
         total_amount = self.Calculate_Loan_Total()
 
+        if self.num_loans == 0:
+
+            return 0
+
         return total_amount / self.num_loans
 
 

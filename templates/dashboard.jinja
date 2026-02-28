@@ -3,7 +3,7 @@
 {% block body %}
   <div>
     {% if user %}
-      Logged in as {{ user.email }} | <a href="/jobs">Job Listings</a> | <a href="/logout">Logout</a>
+      Logged in as {{ user.email }} | <a href="/logout">Logout</a>
     {% else %}
       <a href="/login">Login</a> | <a href="/register">Register</a>
     {% endif %}
