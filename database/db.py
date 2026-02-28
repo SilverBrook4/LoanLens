@@ -117,6 +117,19 @@ def create_loan(user_id, loan_name, min_payment, loan_type, late_fee, p_amount, 
     )
     connection.commit()
     connection.close()
+
+#deletes loan given its name and interest type.
+def delete_loan(loan_name, IT):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        '''DELETE FROM loans WHERE loan_name= ? AND IT = ?''',
+        (loan_name, IT)
+    )
+
+    connection.commit()
+    connection.close()
     
 
 #retrieves users goals, returns a list of tuples of each goal information.
@@ -169,7 +182,20 @@ def test():
 
     print("Inserted user:", user)
 
-    #need a function to add goals
-    #need a function to delete goals
+    #creating functions to add jobs to a database.
+
+    #adds a job to jobs table.
+    def add_job(job_title,description,salary, career_id):
+        connection = sql.connect("database/fintech.db")
+        cursor = connection.cursor()
+        cursor.execute(
+        '''INSERT into Job (job_title, description, salary, career_id) VALUES (?,?,?,?)''',
+        (job_title,description,salary, career_id)
+        )
+        connection.commit()
+        connection.close()
+
+
+
 
 #test()
