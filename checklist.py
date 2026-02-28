@@ -18,9 +18,8 @@ class Checklist:
 
 
     def Get_Goals_From_DB(self):
-
-        # get user goals fro database
-        goals_db = db.retrieve_goals(self.user)
+        user_id = self.user.get("id")  # extract Kinde user ID
+        goals_db = db.retrieve_goals(user_id)
 
         # cycle through all goals and create tasks
         for goal_db in goals_db:
@@ -32,16 +31,17 @@ class Checklist:
             duration = goal_db[4]
 
             # create goal object
-            goal = Goal(goal_ID, description, completion_status, duration)
+            g = Goal(goal_ID, description, completion_status, duration)
 
             # adds goal to goals list
-            self.goals.append(goal)
+            self.goals.append(g)
 
 
     def Create_Post(self):
 
         post = []
 
-        for goal in self.goals:
+        for g in self.goals:
 
-            post.append(goal.Create_Post())
+            post.append(g.Create_Post())
+        return post
