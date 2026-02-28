@@ -27,6 +27,8 @@ class LoanList():
 
         self.loan_total = self.Calculate_Loan_Total()
 
+        self.num_loans = len(self.loans)
+
 
     def Calculate_Loan_Total(self):
 
@@ -37,3 +39,9 @@ class LoanList():
             total_amount = total_amount + loan.p_amount
 
         return total_amount
+
+    def Calculate_Average_Loan_Size(self):
+
+        total_amount = self.Calculate_Loan_Total()
+
+        return total_amount / self.num_loans
