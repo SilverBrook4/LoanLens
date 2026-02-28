@@ -15,16 +15,16 @@
 
   <main>
     <section class="loan_distribution">
-    <h2>Loan Payoff Progress</h2>
-    <p>Principal vs minimum payment per loan</p>
-    <div>
-      {% if chart %}
-        <img src="data:image/png;base64,{{ chart }}" alt="Loan chart" style="width: 100%; max-width: 700px;">
-      {% else %}
-        <p>No loan data to display chart.</p>
-      {% endif %}
-    </div>
-  </section>
+      <h2>Loans Overview</h2>
+      <p>Principal and minimum payment by loan</p>
+      <div class="loan-chart-wrap">
+        {% if chart %}
+        <img src="data:image/png;base64,{{ chart }}" alt="Loan payoff progress" class="loan-chart-img">
+        {% else %}
+        <p class="loan-chart-empty">Add loans to see your payoff progress chart.</p>
+        {% endif %}
+      </div>
+    </section>
 
     <section class="loan_summary">
       <h2>Loan Summary</h2>
@@ -188,28 +188,23 @@
     <section class="checklist">
       <h2>Completion Checklist</h2>
       <p>Track your loan processing tasks</p>
-      <div>
+      <div class="checklist-goals">
         {% if goals %}
-        {% for goal in goals%}
-          <form action="/goal_status" method="POST" style="margin: 0;">
-            <input type="hidden" name="goal_id" value="{{ goal['id'] }}">
-            <input type="hidden" name="current_status" value="{{ goal['status'] }}">
-            
-            <button type="submit" 
-                    class="{% if goal['status'] == 1 %}success{% else %}secondary outline{% endif %}" 
-                    style="padding: 5px 15px; font-size: 0.9rem; min-width: 120px;">
-              {% if goal['status'] == 1 %} Mark Incomplete {% else %} Mark Complete {% endif %}
-            </button>
-          </form>
-
-          <span style="{% if goal['status'] == 1 %}text-decoration: line-through; opacity: 0.6;{% endif %}">
-            {{ goal['description'] }}
-          </span>
-
-          <form action="/delete_goal" method="POST" style="margin: 0;">
-            <input type="hidden" name="goal_id" value="{{ goal['id'] }}">
-            <button type="submit" class="outline secondary" style="padding: 2px 10px; font-size: 0.8rem;">Delete</button>
-          </form>
+        {% for goal in goals %}
+          <div class="checklist-item">
+            <form action="/goal_status" method="POST" class="checklist-form-inline">
+              <input type="hidden" name="goal_id" value="{{ goal['id'] }}">
+              <input type="hidden" name="current_status" value="{{ goal['status'] }}">
+              <button type="submit" class="{% if goal['status'] == 1 %}success{% else %}secondary outline{% endif %} checklist-btn">
+                {% if goal['status'] == 1 %} Mark Incomplete {% else %} Mark Complete {% endif %}
+              </button>
+            </form>
+            <span class="checklist-goal-desc {% if goal['status'] == 1 %}checklist-goal-done{% endif %}">{{ goal['description'] }}</span>
+            <form action="/delete_goal" method="POST" class="checklist-form-inline">
+              <input type="hidden" name="goal_id" value="{{ goal['id'] }}">
+              <button type="submit" class="outline secondary checklist-btn-delete">Delete</button>
+            </form>
+          </div>
         {% endfor %}
         {% endif %}
         <!--

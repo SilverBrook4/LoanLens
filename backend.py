@@ -61,17 +61,27 @@ def generate_loan_chart(loans):
     principals = [loan[6] for loan in loans]     # p_amount
     amount_payed = [loan[10] for loan in loans]  # amount_payed
 
-    fig, ax = plt.subplots(figsize=(6, 3))
-    ax.barh(names, principals, color='#4A90D9', label='Total Principal')
-    ax.barh(names, amount_payed, color='#27AE60', label='Amount Paid')
+    fig, ax = plt.subplots(figsize=(8, max(3.5, len(names) * 0.5)))
+    fig.patch.set_facecolor('none')
+    ax.set_facecolor('none')
 
-    ax.set_xlabel('Amount ($)')
-    ax.set_title('Loan Payoff Progress')
-    ax.legend()
+    x = range(len(names))
+    bar_height = 0.35
+    bars1 = ax.barh([i - bar_height/2 for i in x], principals, bar_height, label='Principal', color='#667eea', edgecolor='rgba(255,255,255,0.3)', linewidth=0.8)
+    bars2 = ax.barh([i + bar_height/2 for i in x], min_payments, bar_height, label='Min Payment', color='#27ae60', edgecolor='rgba(255,255,255,0.3)', linewidth=0.8)
+
+    ax.set_yticks(x)
+    ax.set_yticklabels(names, fontsize=10)
+    ax.set_xlabel('Amount ($)', fontsize=11, color='#333')
+    ax.set_title('Loan Payoff Progress', fontsize=14, fontweight=600, color='#333', pad=12)
+    ax.legend(loc='lower right', framealpha=0.95, fontsize=9)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.grid(axis='x', alpha=0.3, linestyle='--')
     plt.tight_layout()
 
     buf = io.BytesIO()
-    plt.savefig(buf, format='png', transparent=True)
+    plt.savefig(buf, format='png', transparent=True, dpi=120, bbox_inches='tight')
     plt.close(fig)
     buf.seek(0)
     return base64.b64encode(buf.read()).decode('utf-8')
@@ -257,6 +267,7 @@ async def home(request: Request):
             "goals": goals,
             "goal_completed": goal_completed,
             "goal_total": goal_total,
+            "chart": chart,
             "loan_summary": loan_summary,
             "loans": loans,
             "chart": chart,
