@@ -67,8 +67,8 @@ def generate_loan_chart(loans):
 
     x = range(len(names))
     bar_height = 0.35
-    bars1 = ax.barh([i - bar_height/2 for i in x], principals, bar_height, label='Principal', color='#667eea', edgecolor='rgba(255,255,255,0.3)', linewidth=0.8)
-    bars2 = ax.barh([i + bar_height/2 for i in x], min_payments, bar_height, label='Min Payment', color='#27ae60', edgecolor='rgba(255,255,255,0.3)', linewidth=0.8)
+    bars1 = ax.barh([i - bar_height/2 for i in x], principals, bar_height, label='Principal', color='#667eea', edgecolor=(1,1,1,0.3), linewidth=0.8)
+    bars2 = ax.barh([i + bar_height/2 for i in x], amount_payed, bar_height, label='Min Payment', color='#27ae60', edgecolor=(1,1,1,0.3), linewidth=0.8)
 
     ax.set_yticks(x)
     ax.set_yticklabels(names, fontsize=10)
@@ -175,12 +175,12 @@ async def toggle_goal_status(
     db.update_goal_status(goal_id, new_status, db_user_id)
     return RedirectResponse(url="/", status_code=302)
 
-@app.post("/delete_goal")
-async def delete_goal(
+@app.post("/goal_delete")
+async def goal_delete(
     request: Request,
     goal_id: str = Form(...)
 ):
-    db.delete_goal(goal_id)
+    db.goal_delete(goal_id)
     return RedirectResponse(url="/", status_code=302)
 
 # ------ loan modifications ------

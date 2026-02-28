@@ -200,7 +200,7 @@
               </button>
             </form>
             <span class="checklist-goal-desc {% if goal['status'] == 1 %}checklist-goal-done{% endif %}">{{ goal['description'] }}</span>
-            <form action="/delete_goal" method="POST" class="checklist-form-inline">
+            <form action="/goal_delete" method="POST" class="checklist-form-inline">
               <input type="hidden" name="goal_id" value="{{ goal['id'] }}">
               <button type="submit" class="outline secondary checklist-btn-delete">Delete</button>
             </form>
