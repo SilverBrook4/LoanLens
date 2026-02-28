@@ -95,15 +95,18 @@ async def logout(request: Request):
 @app.post("/goal_create")
 async def goal_create(
     request: Request, 
-    goal_name: str = Form(...),
+    goal: str = Form(...),
     duration: int = Form(...),
-    complete: int = Form(...)
+    status: str = Form(...)
     ): 
-    if complete == 'yes':
-        complete_flag = 1
+    current_user = request.session.get("kinde_user")
+    kinde_id = current_user.get("id")
+    if status == 'yes':
+        status_flag = 1
     else:
-        complete_flag = 0
-    #db.add_goal()
+        status_flag = 0
+    db.add_goal(kinde_id, status_flag, goal, duration)
+    return RedirectResponse(url="/", status_code=302)
     
     pass
 @app.get("/", response_class=HTMLResponse)
