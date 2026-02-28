@@ -23,5 +23,5 @@ def get_users():
 
 # gets list of user task
 def get_goals():
-
+    pass
 # End of masons functions
