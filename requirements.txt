@@ -2,3 +2,4 @@ pandas
 fastapi
 fastapi[standard]
 matplotlib
+python-multipart
