@@ -182,7 +182,20 @@ def test():
 
     print("Inserted user:", user)
 
-    #need a function to add goals
-    #need a function to delete goals
+    #creating functions to add jobs to a database.
+
+    #adds a job to jobs table.
+    def add_job(job_title,description,salary, career_id):
+        connection = sql.connect("database/fintech.db")
+        cursor = connection.cursor()
+        cursor.execute(
+        '''INSERT into Job (job_title, description, salary, career_id) VALUES (?,?,?,?)''',
+        (job_title,description,salary, career_id)
+        )
+        connection.commit()
+        connection.close()
+
+
+
 
 #test()
