@@ -52,11 +52,25 @@ class LoanList():
         return total_amount / self.num_loans
 
 
+    def Calculate_Active_Loans(self):
+
+        active_loans = 0
+
+        for loan in self.loans:
+
+            if loan.active:
+
+                active_loans = active_loans + 1
+
+        return active_loans
+
+
     def Create_Post(self):
 
         loan_total = self.Calculate_Loan_Total()
         avg_loan = self.Calculate_Average_Loan_Size()
+        active_loans = self.Calculate_Active_Loans()
 
-        post = {'total_amount':loan_total, 'avg_loan':avg_loan}
+        post = {'total_amount':loan_total, 'avg_loan':avg_loan, 'num_loans':self.num_loans, 'active_loans':active_loans}
 
         return post

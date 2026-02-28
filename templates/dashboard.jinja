@@ -37,23 +37,40 @@
         <div>
           <div id="totalLoans">
           {% if loan_summary %}
-            {{loan_summary['total_amount']}}
+            {{loan_summary['num_loans']}}
           {% else %}
-            No Total to Display
-          {% endif %}}
+            No Loan Data to Display
+          {% endif %}
           </div>
           <div>Total Loans</div>
         </div>
         <div>
-          <div id="totalAmount">$0</div>
+          <div id="totalAmount">
+          {% if loan_summary %}
+            {{loan_summary['total_amount']}}
+          {% else %}
+            No Loan Data to Display
+          {% endif %}
+          </div>
           <div>Total Amount</div>
         </div>
         <div>
-          <div id="activeLoans">0</div>
+          <div id="activeLoans">
+          {% if loan_summary %}
+            {{loan_summary['active_loans']}}
+          {% else %}
+            No Loan Data to Display
+          {% endif %}</div>
           <div>Active Loans</div>
         </div>
         <div>
-          <div id="avgLoan">$0</div>
+          <div id="avgLoan">
+          {% if loan_summary %}
+            {{loan_summary['avg_loan']}}
+          {% else %}
+            No Loan Data to Display
+          {% endif %}
+          </div>
           <div>Avg Loan Size</div>
         </div>
       </div>

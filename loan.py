@@ -15,3 +15,11 @@ class Loan:
         self.term_length = term_length
         self.amount_payed = amount_payed
 
+        if p_amount <= amount_payed:
+            
+            self.active = True
+
+        else:
+
+            self.active = False
+
