@@ -22,8 +22,9 @@ class LoanList():
             ir = loan[7]
             it = loan[8]
             term_length = loan[9]
+            amount_payed = loan[10]
 
-            self.loans.append(Loan(loan_id, loan_name, min_payment, type, late_fee, p_amount, ir, it, term_length))
+            self.loans.append(Loan(loan_id, loan_name, min_payment, type, late_fee, p_amount, ir, it, term_length, amount_payed))
 
         self.loan_total = self.Calculate_Loan_Total()
 
@@ -45,3 +46,14 @@ class LoanList():
         total_amount = self.Calculate_Loan_Total()
 
         return total_amount / self.num_loans
+
+
+    def Create_Post(self):
+
+        post = []
+
+        for loan in self.loans:
+
+            post.append(loan.Create_Post())
+
+        return post

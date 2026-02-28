@@ -2,7 +2,7 @@
 
 class Loan:
 
-    def __init__(self, id, name, min_payment, type, late_fee, p_amount, ir, it, term_length):
+    def __init__(self, id, name, min_payment, type, late_fee, p_amount, ir, it, term_length, amount_payed):
 
         self.id = id
         self.name = name
@@ -13,3 +13,8 @@ class Loan:
         self.ir = ir
         self.it = it
         self.term_length = term_length
+        self.amount_payed = amount_payed
+
+    def Create_Post(self):
+
+        return {}

@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from kinde_sdk.auth.oauth import OAuth
 from kinde_sdk.core.helpers import generate_random_string
 import checklist as checklist_module
+import loan_list as loan_list_module
 from typing import Optional
 
 BASE_DIR = Path(__file__).parent
@@ -138,12 +139,17 @@ async def home(request: Request):
     checklist = checklist_module.Checklist(current_user)
     goals = checklist.Create_Post()
 
+    # get loans and loan summary data
+    loans = loan_list_module.LoanList(current_user)
+    loan_summary = loans.Create_Post()
+
     return templates.TemplateResponse(
         "dashboard.jinja",
         {
             "request": request, 
             "user": current_user, 
-            "goals": goals
+            "goals": goals,
+            "loan_summary": loan_summary
         }
     )
 
