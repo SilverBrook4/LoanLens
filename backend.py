@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Depends, HTTPException, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.security import OAuth2PasswordBearer
 from starlette.middleware.sessions import SessionMiddleware
 from database import db
 from typing import Annotated
@@ -9,6 +10,7 @@ import uvicorn
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from kinde_sdk.auth.oauth import OAuth
 
 load_dotenv()
 
@@ -21,21 +23,21 @@ app.add_middleware(
 )
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
-'''
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    # get current user
-    try:
-        # 2. Use the Kinde SDK/helper to decode and verify
-        user_info = kinde_client.get_user_details(token) 
-        
-        if not user_info:
-            raise HTTPException(status_code=401, detail="Invalid Session")
-            
-        return user_info # This now "injects" the user into your routes
-        
-    except Exception:
-        raise HTTPException(status_code=401, detail="Could not validate credentials")
-'''
+
+# initialize OAuth
+kinde_oauth = OAuth(framework="fastapi", app=app)
+# Tell FastAPI where to look for the Bearer Token
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+async def get_current_user(request: Request):
+    # Check if a valid session exists
+    if not kinde_oauth.is_authenticated():
+        raise HTTPException(status_code=401, detail="Please log in first")
+    
+    # Get the user details directly from the SDK
+    # This returns a dictionary with 'id', 'email', 'given_name', etc.
+    user = kinde_oauth.get_user_details()
+    return user
+
 # WEB APP ROUTES
 @app.get("/", response_class=HTMLResponse)
 async def login(request: Request):
@@ -43,12 +45,11 @@ async def login(request: Request):
         "login.jinja",
         {"request": request,}
     )
-'''
+
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(
     request: Request,
-    # The 'get_current_user' function extracts the Kinde ID from the token
-    current_user: Annotated[dict, Depends(get_current_user)]
+    current_user: dict = Depends(get_current_user)
 ):
     # Access the user's unique ID from the Kinde token
     kinde_id = current_user.get("id")
@@ -63,6 +64,6 @@ async def dashboard(
             "user": current_user  # Pass the Kinde info to the frontend
         }
     )
-'''
+
 if __name__ == '__main__':
     uvicorn.run(app, host="127.0.0.1", port=8000)
