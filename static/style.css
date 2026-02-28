@@ -1,0 +1,55 @@
+* {
+    font-family: system-ui, -apple-system, sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* General CSS */
+p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Header style */
+header {
+    background: linear-gradient(135deg, rgb(148, 94, 255) 0%, rgb(165, 120, 255) 100%);
+    padding: 1.5em;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1.5em;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 2rem;
+}
+
+/* Body Style */
+body {
+    background-color: rgba(245, 248, 250, 1);
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    padding: 2em;
+    min-height: 30em;
+    flex: 1;
+}
+
+main h1 {
+    color: rgba(40, 40, 40, 1);
+    margin-bottom: 1.5em;
+    font-size: 2.5rem;
+}
+
