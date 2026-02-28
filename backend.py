@@ -16,6 +16,8 @@ import matplotlib
 matplotlib.use('Agg') # must be non interactive backend 
 import matplotlib.pyplot as plt
 import io, base64
+import loan_list as loan_list_module
+from typing import Optional
 
 BASE_DIR = Path(__file__).parent
 ENV_PATH = BASE_DIR / ".env"
@@ -95,7 +97,7 @@ async def callback(request: Request, code: str, state: str | None = None):
     # Sync Kinde user into your DB
     name = f"{user.get('given_name', '')} {user.get('family_name', '')}".strip()
     email = user.get("email", "")
-    db_user_id = db.get_or_create_user(name, email)  # won't duplicate if they've logged in before
+    db_user_id = db.insert_user(name, email, None)  # won't duplicate if they've logged in before
     user["db_user_id"] = db_user_id
 
     request.session["kinde_user"] = user
@@ -125,12 +127,37 @@ async def goal_create(
     request: Request, 
     goal: str = Form(...),
     duration: int = Form(...),
-    status: str = Form(None)  # None default handles unchecked checkbox
+    status: Optional[str] = Form(None)
     ): 
     current_user = request.session.get("kinde_user")
     db_user_id = current_user.get("db_user_id")  # use db_user_id not kinde_id
     status_flag = 1 if status == 'yes' else 0
     db.add_goal(db_user_id, status_flag, goal, duration)
+    return RedirectResponse(url="/", status_code=302)
+
+@app.post("/goal_status")
+async def toggle_goal_status(
+    request: Request, 
+    goal_id: int = Form(...),
+    current_status: int = Form(...)
+):
+    current_user = request.session.get("kinde_user")
+    if not current_user:
+        return RedirectResponse(url="/login", status_code=302)
+
+    # Flip the status: 0 becomes 1, anything else (like 1) becomes 0
+    new_status = 1 if current_status == 0 else 0
+    
+    db.update_goal_status(goal_id, new_status, current_user.get("id"))
+    
+    return RedirectResponse(url="/", status_code=302)
+
+@app.post("/delete_goal")
+async def delete_goal(
+    request: Request,
+    goal_id: str = Form(...)
+):
+    db.delete_goal(goal_id)
     return RedirectResponse(url="/", status_code=302)
 
 @app.get("/", response_class=HTMLResponse)
@@ -160,14 +187,17 @@ async def home(request: Request):
     checklist = checklist_module.Checklist(current_user)
     goals = checklist.Create_Post()
 
+    # get loans and loan summary data
+    loans = loan_list_module.LoanList(current_user.get("id"))
+    loan_summary = loans.Create_Post()
+
     return templates.TemplateResponse(
         "dashboard.jinja",
         {
             "request": request, 
             "user": current_user, 
             "goals": goals,
-            "loans": loans,
-            "chart": chart
+            "loan_summary": loan_summary
         }
     )
 

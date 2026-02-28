@@ -44,4 +44,5 @@ class Checklist:
         for g in self.goals:
 
             post.append(g.Create_Post())
+
         return post
