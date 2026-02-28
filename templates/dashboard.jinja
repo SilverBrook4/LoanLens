@@ -9,12 +9,12 @@
     {% endif %}
   </div>
   <header>
-    <h1>Financial Dashboard</h1>
+    <h1>{{user.given_name}}'s Financial Dashboard</h1>
     <p>Overview of your loan portfolio</p>
   </header>
 
   <main>
-    <section>
+    <section class="loan_distribution">
       <h2>Loans Distribution</h2>
       <p>Breakdown by loan status</p>
       <div>
@@ -22,7 +22,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="loan_summary">
       <h2>Loan Summary</h2>
       <p>Key metrics at a glance</p>
       <div>
@@ -45,7 +45,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="monthly_goal">
       <h2>Monthly Goal Progress</h2>
       <p>Current progress towards monthly target</p>
       <div>
@@ -55,7 +55,7 @@
       </div>
     </section>
 
-    <section>
+    <section class="loan_progress">
       <h2>Loan Completion Progress</h2>
       <p>Progress towards completing all loans</p>
       <div>
@@ -65,10 +65,16 @@
       </div>
     </section>
 
-    <section>
+    <section class="checklist">
       <h2>Completion Checklist</h2>
       <p>Track your loan processing tasks</p>
       <div>
+        {% for goal in goals%}
+          <div>
+            <input type="checkbox" id={{ goal['id'] }} name="checklist">
+            <label for={{ goal['id'] }}>{{ goal['description'] }}</label>
+          <div>
+        {% endfor %}
         <div>
           <input type="checkbox" id="check1" name="checklist">
           <label for="check1">Review pending loan applications</label>

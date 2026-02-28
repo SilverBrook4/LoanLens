@@ -1,0 +1,47 @@
+{% extends 'base.jinja' %}
+
+{% block body %}
+<header>
+    <h1>Welcome to LoanLens</h1>
+</header>
+<main>
+    <Section class="login">
+        <h2>Login</h2>
+        <form action="/user_login" method="POST">
+            <label for="email">
+                Email
+                <input type="text" id="email" name="email" required>
+            </label>
+
+            <label for="password">
+                Password
+                <input type="password" id="password" name="password" required>
+            </label>
+
+            <button type="submit">Login</button>
+        </form>
+    </Section>
+    <details>
+        <summary role="button" class="secondary">Add New User</summary>
+        <form action="/user_create" method="POST">
+            <label for="name">
+                Name
+                <input type="text" id="name" name="name" required>
+            </label>
+            
+            <label for="email">
+                Email
+                <input type="text" id="email" name="email" required>
+            </label>
+
+            <label for="password">
+                Password
+                <input type="password" id="password" name="password" required>
+            </label>
+
+            <button type="submit">Login</button>
+        </form>
+
+    </details>
+</main>
+{% endblock %}

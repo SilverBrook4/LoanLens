@@ -5,3 +5,4 @@ matplotlib
 python-multipart
 jinja2
 uvicorn
+kinde-python-sdk

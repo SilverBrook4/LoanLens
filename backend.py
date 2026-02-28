@@ -1,12 +1,19 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends, HTTPException, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.security import OAuth2PasswordBearer
 from starlette.middleware.sessions import SessionMiddleware
+from database import db
+from typing import Annotated
 import uvicorn
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from kinde_sdk.auth.oauth import OAuth
+import checklist
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).parent
 ENV_PATH = BASE_DIR / ".env"
@@ -84,5 +91,30 @@ async def home(request: Request):
 
     return templates.TemplateResponse("dashboard.jinja", {"request": request, "user": user})
 
+@app.get("/dashboard", response_class=HTMLResponse)
+async def dashboard(
+    request: Request,
+    current_user: dict = Depends(get_current_user)
+):
+    # Access the user's unique ID from the Kinde token
+    kinde_id = current_user.get("id")
+
+    checklist = shecklist.Checklist(current_user)
+
+    goals = checklist.Create_Post()
+
+    # Query your DB using ONLY this ID
+    # example: user_data = db.query(User).filter(User.kinde_id == kinde_id).first()
+    
+    return templates.TemplateResponse(
+        "dashboard.jinja", 
+        {
+            "request": request, 
+            "user": current_user,  # Pass the Kinde info to the frontend
+            "goals": goals
+        }
+    )
+
+if __name__ == '__main__':
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
