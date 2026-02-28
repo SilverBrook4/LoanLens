@@ -1,23 +1,39 @@
-# databse funcitonality
+# database funcitonality
 
 # create functions to access data from .db file
 
 import sqlite3 as sql
 import matplotlib
 
-# get all users 
-def get_users():
+#creates a career a user wants and returns the career id
+def insert_career(name):
     connection = sql.connect("database/fintech.db")
     cursor = connection.cursor()
-    cursor.execute("SELECT user_id, username, email FROM users ORDER BY username")
-    users = []
-    for row in cursor.fetchall():
-        users.append({"user_id": row[0], "username": row[1], "email": row[2]})
+
+    cursor.execute(
+        "INSERT INTO career (name) VALUES (?)",
+        (name,)
+    )
+
+    connection.commit()
+
+    career_id = cursor.lastrowid
+
     connection.close()
-    return users
 
+    return career_id
 
-
+    
+#function that will insert a user to the database
+def insert_user(name,email, h_pass, career_id):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+    cursor.execute(
+        '''INSERT into User (name, email, h_pass, career_id) VALUES (?,?,?,?)''', 
+    (name, email, h_pass, career_id)
+    )
+    connection.commit()
+    connection.close()
 
 # Mason functions
 
