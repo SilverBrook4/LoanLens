@@ -132,12 +132,29 @@ def retrieve_goals(user_id):
 
     return goals
 
-#creates a 
-def add_goals(user_id, completed, description, duration):
+#adds a goal to the db
+def add_goal(user_id, completed, description, duration):
     connection = sql.connect("database/fintech.db")
     cursor = connection.cursor()
-    '''INSERT into goal '''
-    
+    cursor.execute(
+        '''INSERT into goal (user_id, completed, description, duration) VALUES (?,?,?,?)''',
+        (user_id, completed,description,duration)
+        )
+    connection.commit()
+    connection.close()
+
+#deletes a goal
+def delete_goal(description):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        '''DELETE FROM goal WHERE description = ?''',
+        (description,)
+    )
+
+    connection.commit()
+    connection.close()
 
 def test():
     career_id = insert_career("Computer Science")
@@ -155,5 +172,5 @@ def test():
     #need a function to add goals
     #need a function to delete goals
 
-test()
+#test()
 # End of masons functions
