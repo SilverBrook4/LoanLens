@@ -110,10 +110,11 @@ class LoanList():
         if active_loans == 0:
             percent_active = 0
         else:
-            percent_active = (active_loans / self.num_loans) * 100
+            percent_active = ((active_loans - self.num_loans) / self.num_loans) * 100
 
+        active_loans = self.num_loans - active_loans
 
         return {'loan_amount_paid':loans_amount_complete, 'percentage_complete':percentage_complete, 'loan_total':loan_total,
-                'num_loans':self.num_loans, 'percentage_active':percent_active}
+                'num_loans':self.num_loans, 'percentage_active':percent_active, 'active_loans':active_loans}
 
 

@@ -179,9 +179,9 @@
       <h2>Loan Completion Progress</h2>
       <p>Progress towards completing all loans</p>
       <div>
-        <label for="loanCompletion">Completed: 67 / 100 loans</label>
-        <progress id="loanCompletion" value="67" max="100">67%</progress>
-        <span>67%</span>
+        <label for="loanCompletion">Completed: {{completion['active_loans']}} / {{completion['num_loans']}} loans</label>
+        <progress id="loanCompletion" value="{{ completion['percentage_active'] }}" max="100">{{ completion['percentage_active'] }}%</progress>
+        <span>{{ completion['percentage_active'] }}%</span>
       </div>
     </section>
 
