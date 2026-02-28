@@ -9,9 +9,10 @@ import db
 class Checklist:
 
     # checklist class constructor
-    def __init__(self):
+    def __init__(self, user):
 
-        self.goal = []
+        self.user = user
+        self.goals = []
 
         self.Get_Goals_From_DB()
 
@@ -19,7 +20,7 @@ class Checklist:
     def Get_Goals_From_DB(self):
 
         # get user goals fro database
-        goals_db = db.get_goals()
+        goals_db = db.get_goals(user)
 
         # cycle through all goals and create tasks
         for goal_db in goals_db:
@@ -35,3 +36,12 @@ class Checklist:
 
             # adds goal to goals list
             self.goals.append(goal)
+
+
+    def Create_Post(self):
+
+        post = []
+
+        for goal in self.goals:
+
+            post.append(goal.Create_Post())

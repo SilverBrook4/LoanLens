@@ -3,6 +3,14 @@
 
 class Goal:
 
-    def __init__(self):
+    def __init__(self, id, description, status, duration):
 
-        pass
+        self.id = id
+        self.description = description
+        self.status = status
+        self.duration = duration
+
+
+    def Create_Post(self):
+
+        return {'id':self.id, 'description':self.description, 'status':self.status}

@@ -64,8 +64,8 @@
       <div>
         {% for goal in goals%}
           <div>
-            <input type="checkbox" id={{ goal['number'] }} name="checklist">
-            <label for={{ goal['number'] }}>{{ goal['description'] }}</label>
+            <input type="checkbox" id={{ goal['id'] }} name="checklist">
+            <label for={{ goal['id'] }}>{{ goal['description'] }}</label>
           <div>
         {% endfor %}
         <div>
