@@ -11,6 +11,11 @@ from dotenv import load_dotenv
 from kinde_sdk.auth.oauth import OAuth
 from kinde_sdk.core.helpers import generate_random_string
 import checklist as checklist_module
+#matplotlib for graph
+import matplotlib
+matplotlib.use('Agg') # must be non interactive backend 
+import matplotlib.pyplot as plt
+import io, base64
 import loan_list as loan_list_module
 from typing import Optional
 
@@ -44,10 +49,37 @@ def get_current_user(request: Request):
     user = request.session.get("kinde_user")
     if not user:
         raise HTTPException(status_code=401, detail="Not authenticated")
-        return
     return user
 
+<<<<<<< HEAD
+# Holden's function for creating matplotlib bar graph
+# used https://matplotlib.org as a resource
+def generate_loan_chart(loans):
+    if not loans:
+        return None
+
+    names = [loan[2] for loan in loans]          # loan_name
+    principals = [loan[6] for loan in loans]     # p_amount
+    min_payments = [loan[3] for loan in loans]   # min_payment
+
+    fig, ax = plt.subplots(figsize=(6, 3))
+    bars = ax.barh(names, principals, color='#4A90D9', label='Total Principal')
+    ax.barh(names, min_payments, color='#27AE60', label='Min Payment')
+
+    ax.set_xlabel('Amount ($)')
+    ax.set_title('Loan Payoff Progress')
+    ax.legend()
+    plt.tight_layout()
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', transparent=True)
+    plt.close(fig)
+    buf.seek(0)
+    return base64.b64encode(buf.read()).decode('utf-8')
+
+=======
 # ----- Login routes ------
+>>>>>>> 14bdb1011335dafcd2ef51bf50a6fa693a1f06fd
 @app.get("/login")
 async def login(request: Request):
     url = await oauth.login()
@@ -102,12 +134,9 @@ async def goal_create(
     status: Optional[str] = Form(None)
     ): 
     current_user = request.session.get("kinde_user")
-    kinde_id = current_user.get("id")
-    if status == 'yes':
-        status_flag = 1
-    else:
-        status_flag = 0
-    db.add_goal(kinde_id, status_flag, goal, duration)
+    db_user_id = current_user.get("db_user_id")  # use db_user_id not kinde_id
+    status_flag = 1 if status == 'yes' else 0
+    db.add_goal(db_user_id, status_flag, goal, duration)
     return RedirectResponse(url="/", status_code=302)
 
 @app.post("/goal_status")
@@ -171,10 +200,15 @@ async def home(request: Request):
     # Access the user's unique ID from the Kinde session
     kinde_id = current_user.get("id")
     if not kinde_id:
-    # If Kinde didn't return an ID, the session might be corrupted
+        # If Kinde didn't return an ID, the session might be corrupted
         request.session.clear()
         return RedirectResponse(url="/login")
-    
+
+    # Get loans and generate chart
+    db_user_id = current_user.get("db_user_id")
+    loans = db.get_loans(db_user_id)
+    chart = generate_loan_chart(loans)
+
     # Initialize your checklist with the authenticated user
     checklist = checklist_module.Checklist(current_user)
     goals = checklist.Create_Post()
