@@ -69,12 +69,14 @@
       <h2>Completion Checklist</h2>
       <p>Track your loan processing tasks</p>
       <div>
+        {% if goals %}
         {% for goal in goals%}
           <div>
             <input type="checkbox" id={{ goal['id'] }} name="checklist">
             <label for={{ goal['id'] }}>{{ goal['description'] }}</label>
           <div>
         {% endfor %}
+        {% endif %}
         <div>
           <input type="checkbox" id="check1" name="checklist">
           <label for="check1">Review pending loan applications</label>

@@ -46,7 +46,10 @@ oauth = OAuth(
 )
 
 def get_current_user(request: Request):
-    return request.session.get("kinde_user")
+    user = request.session.get("kinde_user")
+    if not user:
+        return None
+    return user
 
 @app.get("/login")
 async def login(request: Request):
@@ -82,35 +85,31 @@ async def logout(request: Request):
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
+    current_user = request.session.get("kinde_user")
+
     if "state" in request.query_params:
         return RedirectResponse(url="/", status_code=302)
 
-    user = get_current_user(request)
-    if not user:
+    # Secure Gatekeeper
+    if not current_user:
         return RedirectResponse(url="/login", status_code=302)
 
-    return templates.TemplateResponse("dashboard.jinja", {"request": request, "user": user})
-
-@app.get("/dashboard", response_class=HTMLResponse)
-async def dashboard(
-    request: Request,
-    current_user: dict = Depends(get_current_user)
-):
-    # Access the user's unique ID from the Kinde token
+    # Access the user's unique ID from the Kinde session
     kinde_id = current_user.get("id")
-
-    checklist = Checklist(current_user)
-
+    if not kinde_id:
+    # If Kinde didn't return an ID, the session might be corrupted
+        request.session.clear()
+        return RedirectResponse(url="/login")
+    
+    # Initialize your checklist with the authenticated user
+    checklist = Checklist(kinde_id)
     goals = checklist.Create_Post()
 
-    # Query your DB using ONLY this ID
-    # example: user_data = db.query(User).filter(User.kinde_id == kinde_id).first()
-    
     return templates.TemplateResponse(
         "dashboard.jinja", 
         {
             "request": request, 
-            "user": current_user,  # Pass the Kinde info to the frontend
+            "user": current_user, 
             "goals": goals
         }
     )
